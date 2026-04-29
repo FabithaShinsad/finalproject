@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="text-center mb-4">Available Services</h2>
+
+    <div class="row">
+
+        {% for service in services %}
+        <div class="col-md-4 mb-4">
+
+            <div class="card shadow-sm">
+
+                <!-- Image -->
+                {% if service.image %}
+                    <img src="{{ service.image.url }}" 
+                         class="card-img-top" 
+                         style="height:200px; object-fit:cover;">
+                {% else %}
+                    <img src="https://via.placeholder.com/300x200" 
+                         class="card-img-top">
+                {% endif %}
+
+                <!-- Content -->
+                <div class="card-body">
+
+                    <h5>{{ service.title }}</h5>
+
+                    <p>
+                        {{ service.description|truncatewords:12 }}
+                    </p>
+
+                    <p class="text-muted">
+                        👨‍🔧 {{ service.freelancer.username }}
+                    </p>
+
+                    {% if service.price %}
+                    <p class="text-success fw-bold">
+                        ₹ {{ service.price }}
+                    </p>
+                    {% endif %}
+
+                    <!-- ✅ BOOK BUTTON (Simple & Safe) -->
+                    <a href="/bookings/book/{{ service.id }}/" class="btn btn-success">Book Now</a>
+
+                </div>
+
+            </div>
+
+        </div>
+        {% empty %}
+            <p class="text-center">No services available</p>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

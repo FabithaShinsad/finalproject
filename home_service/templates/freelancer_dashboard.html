@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container mt-4">
+
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>🧑‍🔧 Freelancer Dashboard</h3>
+        <h5 class="text-warning">⭐ {{ avg_rating|floatformat:1 }} Rating</h5>
+    </div>
+
+    <!-- BOOKINGS -->
+    <div class="card shadow-sm p-3">
+
+        <h5 class="mb-3">📦 Bookings Received</h5>
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead class="table-dark">
+                    <tr>
+                        <th>Client</th>
+                        <th>Service</th>
+                        <th>Date & Time</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                {% for b in bookings %}
+                    <tr>
+
+                        <td><strong>{{ b.client.username }}</strong></td>
+
+                        <td>{{ b.service.name }}</td>
+
+                        <td>
+                            {{ b.date }} <br>
+                            <small class="text-muted">{{ b.time }}</small>
+                        </td>
+
+                        <!-- STATUS -->
+                        <td>
+                            <span class="badge px-3 py-2
+                                {% if b.status == 'pending' %}bg-warning text-dark
+                                {% elif b.status == 'accepted' %}bg-info
+                                {% elif b.status == 'completed' %}bg-success
+                                {% else %}bg-danger
+                                {% endif %}">
+                                {{ b.status|title }}
+                            </span>
+                        </td>
+
+                        <!-- ACTION -->
+                        <td>
+
+                            {% if b.status == 'pending' %}
+                                <div class="d-flex gap-1">
+
+                                    <form method="POST" action="{% url 'update_booking' b.id 'accept' %}">
+                                        {% csrf_token %}
+                                        <button class="btn btn-success btn-sm">✔ Accept</button>
+                                    </form>
+
+                                    <form method="POST" action="{% url 'update_booking' b.id 'reject' %}">
+                                        {% csrf_token %}
+                                        <button class="btn btn-danger btn-sm">✖ Reject</button>
+                                    </form>
+
+                                </div>
+
+                            {% elif b.status == 'accepted' %}
+                                <form method="POST" action="{% url 'update_booking' b.id 'complete' %}">
+                                    {% csrf_token %}
+                                    <button class="btn btn-primary btn-sm">
+                                        🚀 Mark Completed
+                                    </button>
+                                </form>
+
+                            {% else %}
+
+                                {% if b.status == 'completed' %}
+
+                                    {% if b.id %}
+                                        <a href="{% url 'view_review' b.id %}" class="btn btn-outline-success btn-sm">
+                                            ⭐ View Review
+                                        </a>
+                                    {% else %}
+                                    <span class="text-muted">Waiting for review</span>
+                                    {% endif %}
+
+                                {% elif b.status == 'cancelled' %}
+                                    <span class="text-danger">Cancelled</span>
+
+                                {% else %}
+                                    <span class="text-muted">No actions</span>
+                                {% endif %}
+
+                            {% endif %}
+                        </td>
+
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">
+                            No bookings found
+                        </td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <!-- REVIEWS SECTION -->
+    <div class="card mt-4 shadow-sm p-3">
+
+        <h5>⭐ Customer Reviews</h5>
+
+        {% for r in reviews %}
+            <div class="border rounded p-3 mt-2">
+
+                <div class="d-flex justify-content-between">
+                    <strong>{{ r.client.username }}</strong>
+                    <span class="text-warning">⭐ {{ r.rating }}</span>
+                </div>
+
+                <small class="text-muted">
+                    {{ r.created_at|date:"M d, Y" }}
+                </small>
+
+                <p class="mt-2 mb-0">{{ r.comment }}</p>
+
+            </div>
+        {% empty %}
+            <p class="text-muted mt-2">No reviews yet</p>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

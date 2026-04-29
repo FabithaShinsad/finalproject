@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h3 class="mb-4">Dashboard</h3>
+
+    <!-- CLIENT BOOKINGS -->
+    <h5>Your Bookings</h5>
+
+    <table class="table table-bordered">
+        <tr>
+            <th>Service</th>
+            <th>Freelancer</th>
+            <th>Date</th>
+            <th>Status</th>
+        </tr>
+
+        {% for b in client_bookings %}
+        <tr>
+            <td>{{ b.service.name}}</td>
+            <td>{{ b.freelancer.username }}</td>
+            <td>{{ b.date }} {{ b.time }}</td>
+            <td>
+                <span class="badge bg-info">{{ b.status }}</span>
+            </td>
+            <td>
+                {% if b.status == 'completed' %}
+                    <a href="{% url 'add_review' b.id %}" class="btn btn-warning btn-sm">
+                        ⭐ Review
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">No bookings</td></tr>
+        {% endfor %}
+    </table>
+
+    <hr>
+
+    <!-- FREELANCER BOOKINGS -->
+    <h5>Bookings Received</h5>
+
+    <table class="table table-bordered">
+        <tr>
+            <th>Client</th>
+            <th>Service</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+
+        {% for b in freelancer_bookings %}
+        <tr>
+            <td>{{ b.client.username }}</td>
+            <td>{{ b.service.name }}</td>
+            <td>{{ b.date }} {{ b.time }}</td>
+            <td>
+                <span class="badge bg-warning">{{ b.status }}</span>
+            </td>
+            <td>
+                {% if b.status == 'pending' %}
+                    <a href="{% url 'update_booking' b.id 'accept' %}" class="btn btn-success btn-sm">
+                        Accept
+                    </a>
+                    <a href="{% url 'update_booking' b.id 'reject' %}" class="btn btn-danger btn-sm">
+                        Reject
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">No requests</td></tr>
+        {% endfor %}
+    </table>
+
+</div>
+
+{% endblock %}

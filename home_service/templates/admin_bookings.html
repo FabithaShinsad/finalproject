@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container mt-4">
+    <h3>📅 All Bookings</h3>
+
+    <table class="table table-bordered mt-3">
+        <tr>
+            <th>Client</th>
+            <th>Freelancer</th>
+            <th>Service</th>
+            <th>Date</th>
+            <th>Status</th>
+        </tr>
+
+        {% for b in bookings %}
+        <tr>
+            <td>{{ b.client.username }}</td>
+            <td>{{ b.freelancer.username }}</td>
+            <td>{{ b.service.name }}</td>
+            <td>{{ b.date }} {{ b.time }}</td>
+            <td>{{ b.status }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+
+{% endblock %}
