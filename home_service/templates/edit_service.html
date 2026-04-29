@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7 col-md-9">
+
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+
+                <!-- Header -->
+                <div class="card-header bg-warning text-dark text-center py-4">
+                    <h3 class="mb-1">✏ Edit Service</h3>
+                    <small>Update your service details below</small>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <!-- Service Name -->
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Service Name</label>
+                            <input type="text" name="name" class="form-control form-control-lg"
+                                   value="{{ service.name }}" required>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Description</label>
+                            <textarea name="description" rows="4" class="form-control">{{ service.description }}</textarea>
+                        </div>
+
+                        <!-- Current Image -->
+                        {% if service.image %}
+                        <div class="mb-3 text-center">
+                            <label class="form-label fw-semibold">Current Image</label><br>
+                            <img src="{{ service.image.url }}" class="img-fluid rounded shadow-sm"
+                                 style="max-height: 220px; object-fit: cover;">
+                        </div>
+                        {% endif %}
+
+                        <!-- Upload New Image -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Change Image (optional)</label>
+                            <input type="file" name="image" class="form-control" accept="image/*">
+                            <small class="text-muted">Upload only if you want to replace current image</small>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'admin_dashboard' %}" class="btn btn-secondary px-4">
+                                ← Cancel
+                            </a>
+
+                            <button type="submit" class="btn btn-warning px-4">
+                                ✏ Update Service
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<style>
+body {
+    background: #f4f6f9;
+}
+
+.card {
+    transition: 0.3s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #ffc107;
+}
+
+label {
+    margin-bottom: 6px;
+}
+</style>
+
+{% endblock %}

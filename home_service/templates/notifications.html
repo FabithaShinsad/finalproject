@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h3 class="mb-3">🔔 Notifications</h3>
+
+    <div class="card shadow-sm">
+
+        <ul class="list-group list-group-flush">
+
+            {% for n in notes %}
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+
+                    <!-- MESSAGE -->
+                    <div>
+                        {{ n.message }}
+                    </div>
+
+                    <!-- DATE & TIME -->
+                    <small class="text-muted text-end">
+                        {{ n.created_at|timesince }} ago <br>
+                        {{ n.created_at|date:"M d, Y h:i A" }}
+                    </small>
+
+                </li>
+
+            {% empty %}
+                <li class="list-group-item text-center text-muted">
+                    No notifications
+                </li>
+            {% endfor %}
+
+        </ul>
+
+    </div>
+
+</div>
+
+{% endblock %}

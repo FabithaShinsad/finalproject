@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+
+        <!-- SIDEBAR -->
+        <div class="col-md-2 bg-dark min-vh-100 p-3">
+
+            <h4 class="text-white mb-4">⚙ Admin Panel</h4>
+
+            <div class="nav flex-column">
+
+                <a href="{% url 'admin_dashboard' %}" class="nav-link text-white active-link">
+                    📊 Dashboard
+                </a>
+
+                <a href="{% url 'add_service' %}" class="nav-link text-white">
+                    ➕ Services
+                </a>
+
+                <a href="{% url 'admin_users' %}" class="nav-link text-white">
+                    👥 Users
+                </a>
+
+                <a href="{% url 'admin_bookings' %}" class="nav-link text-white">
+                    📅 Bookings
+                </a>
+
+                <a href="{% url 'notifications' %}" class="nav-link text-white">
+                    🔔 Notifications
+                </a>
+
+            </div>
+
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="col-md-10 p-4">
+
+            <h3 class="mb-4">📊 Dashboard Overview</h3>
+
+            <!-- STATS CARDS -->
+            <div class="row g-3">
+
+                <div class="col-md-3">
+                    <div class="card stat-card blue">
+                        <h2>{{ total_services }}</h2>
+                        <p>Services</p>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card stat-card green">
+                        <h2>{{ total_users }}</h2>
+                        <p>Users</p>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card stat-card orange">
+                        <h2>{{ total_freelancers }}</h2>
+                        <p>Freelancers</p>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card stat-card red">
+                        <h2>{{ total_clients }}</h2>
+                        <p>Clients</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- QUICK ACTIONS -->
+            <div class="row mt-4 g-3">
+
+                <div class="col-md-4">
+                    <div class="card shadow-sm p-3 text-center">
+                        <h5>➕ Add Service</h5>
+                        <a href="{% url 'add_service' %}" class="btn btn-success btn-sm mt-2">
+                            Add Now
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card shadow-sm p-3 text-center">
+                        <h5>👥 Manage Users</h5>
+                        <a href="{% url 'admin_users' %}" class="btn btn-primary btn-sm mt-2">
+                            View Users
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card shadow-sm p-3 text-center">
+                        <h5>📅 View Bookings</h5>
+                        <a href="{% url 'admin_bookings' %}" class="btn btn-dark btn-sm mt-2">
+                            View Bookings
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- SERVICES TABLE -->
+            <div class="mt-5">
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4>🛠 Services</h4>
+                    <a href="{% url 'add_service' %}" class="btn btn-success">
+                        + Add Service
+                    </a>
+                </div>
+
+                <div class="table-responsive mt-3">
+                    <table class="table table-hover">
+
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th width="180">Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for s in services %}
+                            <tr>
+                                <td><strong>{{ s.name }}</strong></td>
+                                <td>{{ s.description }}</td>
+                                <td>
+                                    <a href="{% url 'edit_service' s.id %}" class="btn btn-warning btn-sm">
+                                        Edit
+                                    </a>
+
+                                    <a href="{% url 'delete_service' s.id %}"
+                                       class="btn btn-danger btn-sm"
+                                       onclick="return confirm('Delete this service?')">
+                                        Delete
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- STYLE -->
+<style>
+.stat-card{
+    color:white;
+    padding:20px;
+    border-radius:15px;
+    text-align:center;
+    transition:0.3s;
+}
+.stat-card:hover{
+    transform:translateY(-5px);
+}
+
+.blue{ background: linear-gradient(135deg,#4facfe,#00f2fe);}
+.green{ background: linear-gradient(135deg,#43e97b,#38f9d7);}
+.orange{ background: linear-gradient(135deg,#fa709a,#fee140);}
+.red{ background: linear-gradient(135deg,#ff5858,#f09819);}
+
+.nav-link:hover{
+    background:#343a40;
+    border-radius:8px;
+}
+
+.active-link{
+    background:#495057;
+    border-radius:8px;
+}
+</style>
+
+{% endblock %}

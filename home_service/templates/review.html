@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+
+        <div class="col-md-6">
+
+            <div class="card shadow p-4">
+
+                <h4 class="mb-3">⭐ Add Review</h4>
+
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <label>Rating</label>
+                    {{ form.rating }}
+
+                    <label class="mt-3">Comment</label>
+                    {{ form.comment }}
+
+                    <button class="btn btn-success mt-3 w-100">
+                        Submit Review
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

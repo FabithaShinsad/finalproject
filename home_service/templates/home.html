@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div style="background:black; color:white; padding:30px 20px; text-align:center;">
+
+    <h1 style="font-size:30px; font-weight:bold;">
+        Find the right service, right away
+    </h1>
+
+    <p style="font-size:18px; margin-top:10px;">
+        Explore top services from trusted freelancers
+    </p>
+
+</div>
+
+<div class="container mt-5">
+
+    <h3 class="mb-4">Popular Services</h3>
+
+    <div class="row">
+        {% for service in services %}
+            <div class="col-md-3 mb-4">
+                <div class="card h-100 shadow-sm">
+
+                    {% if service.image %}
+                        <img src="{{ service.image.url }}" class="card-img-top service-img">
+                    {% endif %}
+
+                    <div class="card-body text-center">
+                        <h5>{{ service.name }}</h5>
+                    </div>
+
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}

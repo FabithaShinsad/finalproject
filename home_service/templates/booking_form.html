@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <!-- 🔹 Service Info -->
+            <div class="card mb-3 shadow-sm">
+                <div class="card-body">
+
+                    <h4 class="card-title">{{ service.title }}</h4>
+
+                    <p>{{ service.description }}</p>
+
+                    {% if service.price %}
+                        <p class="text-success fw-bold">₹ {{ service.price }}</p>
+                    {% endif %}
+
+                </div>
+            </div>
+
+            <!-- 🔹 Freelancers List (Display Only) -->
+            <div class="card mb-3 shadow-sm">
+                <div class="card-body">
+
+                    <h5>👨‍🔧 Available Freelancers</h5>
+
+                    <ul class="list-group">
+                        {% for f in freelancers %}
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>{{ f.user.username }}</span>
+                                <span>₹{{ f.price_per_hour }}/hr</span>
+                            </li>
+                        {% empty %}
+                            <li class="list-group-item">No freelancers available</li>
+                        {% endfor %}
+                    </ul>
+
+                </div>
+            </div>
+
+            <!-- 🔹 Booking Form -->
+            <div class="card shadow-sm">
+                <div class="card-body">
+
+                    <h5 class="mb-3">Book This Service</h5>
+
+                    <form method="POST">
+                        {% csrf_token %}
+
+                        <!-- ✅ Freelancer Selection -->
+                        <div class="mb-3">
+                            <label class="form-label">Select Freelancer</label>
+                            {{ form.freelancer }}
+                        </div>
+
+                        <!-- Date -->
+                        <div class="mb-3">
+                            <label class="form-label">Select Date</label>
+                            {{ form.date }}
+                        </div>
+
+                        <!-- Time -->
+                        <div class="mb-3">
+                            <label class="form-label">Select Time</label>
+                            {{ form.time }}
+                        </div>
+
+                        <!-- Address -->
+                        <div class="mb-3">
+                            <label class="form-label">Address</label>
+                            {{ form.address }}
+                        </div>
+
+                        <!-- Submit -->
+                        <button type="submit" class="btn btn-primary w-100">
+                            Confirm Booking
+                        </button>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,5 @@
+.service-img {
+    height: 200px;        /* fixed height */
+    width: 100%;          /* full width */
+    object-fit: cover;    /* crop image nicely */
+}
